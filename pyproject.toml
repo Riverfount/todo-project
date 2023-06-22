@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "todo-project"
+version = "0.1.0"
+description = "Com esse projeto temos a inteção de estudar a criação de API's com fastAPI."
+authors = ["Vicente Marçal <vicente.marcal@gmail.com>"]
+license = "GPLv3+"
+readme = "README.md"
+packages = [{include = "todo_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.pytest.ini_options]
+python_files = [
+    "test*.py",
+    "*tests.py",
+]
+minversion = "6.0"
+addopts = "-ra -q -vv"
+testpaths = [
+    "/tests",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
