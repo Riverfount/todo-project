@@ -130,3 +130,7 @@ dmypy.json
 
 # Dynaconf
 .secrets.toml
+
+# IDEs configuration
+.vscode/
+.idea/
