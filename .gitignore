@@ -134,3 +134,6 @@ dmypy.json
 # IDEs configuration
 .vscode/
 .idea/
+
+# Database volume
+.postgres/
