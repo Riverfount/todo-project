@@ -5,7 +5,6 @@ description = "Com esse projeto temos a inteção de estudar a criação de API'
 authors = ["Vicente Marçal <vicente.marcal@gmail.com>"]
 license = "GPLv3+"
 readme = "README.md"
-packages = [{include = "todo_project"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

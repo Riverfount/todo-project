@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    environment:
+      TODO_DB__uri: "postgresql://postgres:postgres@db:5432/${TODO_DB:-todo}"
+      TODO_DB__connect_args: "{}"
+    volumes:
+      - .:/home/api
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+  db:
+    build: postgres
+    image: todo_postgres-15-alpine-multi-user
+    volumes:
+      - .postgres/todo_db/data/postgresql:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DBS=todo, todo_test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
