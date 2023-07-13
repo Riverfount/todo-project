@@ -19,6 +19,7 @@ flake8 = "^6.0.0"
 pytest-order = "^1.1.0"
 httpx = "^0.24.1"
 pytest-cov = "^4.1.0"
+taskipy = "^1.11.0"
 
 [tool.pytest.ini_options]
 python_files = [
@@ -30,6 +31,12 @@ addopts = "-ra -q -vv"
 testpaths = [
     "/tests",
 ]
+
+[tool.taskipy.tasks]
+test = {cmd = "pytest -x", help = "Run test and abort if has one fail."}
+test-cov = {cmd = "pytest --cov=todo", help = "Run test and give us a coverage report."}
+lint = {cmd = "flake8 .", help = "Run lint to check PEP8."}
+clean = {cmd = "find ./ -name '*.pyc' -delete && find ./ -name '__pycache__' -delete && find ./ -name 'Thumbs.db' -delete && find ./ -name '*~' -delete && rm -rf .cache && rm -rf .pytest_cache && rm -rf dist && rm -rf *.egg-info && rm -rf htmlcov && rm -rf .tox/ && rm -rf site", help = "Clear the project off all files that are dispensables."}
 
 [build-system]
 requires = ["poetry-core"]
