@@ -37,6 +37,12 @@ test = {cmd = "pytest -x", help = "Run test and abort if has one fail."}
 test-cov = {cmd = "pytest --cov=todo", help = "Run test and give us a coverage report."}
 lint = {cmd = "flake8 .", help = "Run lint to check PEP8."}
 clean = {cmd = "find ./ -name '*.pyc' -delete && find ./ -name '__pycache__' -delete && find ./ -name 'Thumbs.db' -delete && find ./ -name '*~' -delete && rm -rf .cache && rm -rf .pytest_cache && rm -rf dist && rm -rf *.egg-info && rm -rf htmlcov && rm -rf .tox/ && rm -rf site", help = "Clear the project off all files that are dispensables."}
+down = {cmd = "docker-compose down", help = "Down the services containers."}
+remove-img = {cmd = "docker image rm todo_project_api:latest todo_postgres-15-alpine-multi-user:latest", help = "Delete containers images to build again."}
+up = {cmd = "docker-compose up -d", help = "Up the services containers."}
+pre_build = "task down && task remove-img"
+build = {cmd = "docker-compose build --no-cache", help = "Build the images' services."}
+post_build = "task up"
 
 [build-system]
 requires = ["poetry-core"]
