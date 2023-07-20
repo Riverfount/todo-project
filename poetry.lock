@@ -179,6 +179,27 @@ files = [
 ]
 
 [[package]]
+name = "dynaconf"
+version = "3.2.0"
+description = "The dynamic configurator for your Python Project"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "dynaconf-3.2.0-py2.py3-none-any.whl", hash = "sha256:791d8029c74548d57b0266aabd6557ebfff6540bffd7f58ba700f577c047c0f5"},
+    {file = "dynaconf-3.2.0.tar.gz", hash = "sha256:a28442d12860a44fad5fa1d9db918c710cbfc971e8b7694697429fb8f1c3c620"},
+]
+
+[package.extras]
+all = ["configobj", "hvac", "redis", "ruamel.yaml"]
+configobj = ["configobj"]
+ini = ["configobj"]
+redis = ["redis"]
+test = ["configobj", "django", "flake8", "flake8-debugger", "flake8-print", "flake8-todo", "flask (>=0.12)", "hvac", "pep8-naming", "pytest", "pytest-cov", "pytest-mock", "pytest-xdist", "python-dotenv", "radon", "redis", "toml"]
+toml = ["toml"]
+vault = ["hvac"]
+yaml = ["ruamel.yaml"]
+
+[[package]]
 name = "executing"
 version = "1.2.0"
 description = "Get the currently executing AST node of a frame, and other information"
@@ -1075,4 +1096,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "2e0ccbc161427eb01e1a1bb2313985383716bc781ba39a1e8b71e91a2038611c"
+content-hash = "bdc5e5663a0f25d15442deabdeb4e507e137a0b928d216ec30d8adac14f3084d"
