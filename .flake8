@@ -3,4 +3,5 @@ exclude =
     .git,
     __pycache__,
     .venv
+    migrations/
 max-length = 120

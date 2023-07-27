@@ -13,6 +13,7 @@ uvicorn = "^0.22.0"
 psycopg2-binary = "^2.9.6"
 sqlmodel = "^0.0.8"
 dynaconf = "^3.2.0"
+alembic = "^1.11.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.2"
