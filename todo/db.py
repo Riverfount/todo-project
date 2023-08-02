@@ -5,6 +5,6 @@ from todo.config import settings
 
 engine = create_engine(
     settings.db.uri,
-    echo=False,
+    echo=settings.db.echo,
     connect_args=settings.db.connect_args
 )
