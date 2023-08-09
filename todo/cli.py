@@ -5,7 +5,7 @@ from sqlmodel import Session, select
 
 from todo.config import settings
 from todo.db import engine
-from todo.models import User
+from todo.models import gen_user_name, User
 
 main = typer.Typer(name='Todo CLI', add_completion=False)
 
@@ -18,6 +18,7 @@ def shell():
         'engine': engine,
         'select': select,
         'session': Session(engine),
+        'gen_user_name': gen_user_name,
         'User': User
     }
     typer.echo(f'Auto imports: {list(_vars.keys())}')
@@ -37,12 +38,12 @@ def shell():
 def user_list():
     """Lists all users"""
     table = Table(title='Todo Users List')
-    fields = ['name', 'user_name', 'active', 'created_at']
+    fields = ['name', 'user_name', 'created_at', 'updated_at']
     for header in fields:
         table.add_column(header, style='red')
 
     with Session(engine) as session:
-        users = session.exec(select(User))
+        users = session.exec(select(User).where(User.active))
         for user in users:
             table.add_row(*[getattr(user, field) for field in fields])
 
