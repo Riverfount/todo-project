@@ -1,8 +1,10 @@
 from datetime import datetime
-from slugify import slugify
 from typing import Optional
 
+from slugify import slugify
 from sqlmodel import Field, SQLModel
+
+from todo.security import HashedPassword
 
 
 class User(SQLModel, table=True):
@@ -10,7 +12,7 @@ class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str = Field(nullable=True)
     email: str = Field(nullable=True, unique=True)
-    password: str = Field(nullable=False)
+    password: HashedPassword
     user_name: str = Field(nullable=False, unique=True)
     active: Optional[bool] = Field(default=True)
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
