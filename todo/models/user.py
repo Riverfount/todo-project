@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
+from pydantic import BaseModel, root_validator
 from slugify import slugify
 from sqlmodel import Field, SQLModel
 
@@ -26,3 +27,30 @@ class User(SQLModel, table=True):
 def gen_user_name(name: str) -> str:
     """Generates a slug user-name from a name"""
     return slugify(name)
+
+
+class UserResponse(BaseModel):
+    """Serializer for Get All User Response."""
+    name: str
+    user_name: str
+
+
+class UserDetailResponse(UserResponse):
+    """Serializer for User Detail Response."""
+    active: bool
+    created_at: datetime
+    updated_at: datetime
+
+
+class UserRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+    user_name: Optional[str] = None
+
+    @root_validator(pre=True)
+    def generate_user_name_if_not_set(cls, values):
+        """Generates username if not send."""
+        if not values.get('user_name'):
+            values['user_name'] = gen_user_name(values['name'])
+        return values
