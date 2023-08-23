@@ -29,6 +29,7 @@ pytest-order = "^1.1.0"
 httpx = "^0.24.1"
 pytest-cov = "^4.1.0"
 taskipy = "^1.11.0"
+flake8-pyproject = "^1.2.3"
 
 [tool.poetry.scripts] 
 todo = "todo.cli:main"
@@ -55,6 +56,9 @@ up = {cmd = "docker-compose up -d", help = "Up the services containers."}
 pre_build = "task down && task remove-img"
 build = {cmd = "docker-compose build --no-cache", help = "Build the images' services."}
 post_build = "task up"
+
+[tool.flake8]
+max-line-length = 120
 
 [build-system]
 requires = ["poetry-core"]
