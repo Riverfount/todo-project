@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
-from sqlmodel import Session, select
+from sqlmodel import Session
 
 from todo.db import ActiveSession
 from todo.models import User, UserDetailResponse, UserRequest, UserResponse, get_user
