@@ -59,7 +59,7 @@ class UserRequest(BaseModel):
 
 
 def get_user(user_name: str = None) -> User | list[User] | None:
-    query = select(User).where(User.user_name == user_name) if user_name else select(User)
+    query = select(User).where(User.user_name == user_name).where(User.active) if user_name else select(User)
     with Session(engine) as session:
         users = session.exec(query).first() if user_name else session.exec(query).all()
     return users
