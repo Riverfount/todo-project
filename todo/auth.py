@@ -1,22 +1,19 @@
 """Token based auth"""
 from datetime import datetime, timedelta
-from typing import Callable, Optional, Union
 from functools import partial
+from typing import Callable, Optional, Union
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from pydantic import BaseModel
-from sqlmodel import Session, select
 
 from todo.config import settings
-from todo.db import engine
-from todo.models.user import User
+from todo.models import User, get_user
 from todo.security import verify_password
 
 SECRET_KEY = settings.security.secret_key  # pyright: ignore
 ALGORITHM = settings.security.algorithm  # pyright: ignore
-
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -79,13 +76,6 @@ def authenticate_user(
     return user
 
 
-def get_user(username) -> Optional[User]:
-    """Get user from database"""
-    query = select(User).where(User.username == username)
-    with Session(engine) as session:
-        return session.exec(query).first()
-
-
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     request: Request = None,  # pyright: ignore
@@ -118,7 +108,7 @@ def get_current_user(
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(username=token_data.username)
+    user = get_user(user_name=token_data.username)
     if user is None:
         raise credentials_exception
     if fresh and (not payload["fresh"] and not user.superuser):
