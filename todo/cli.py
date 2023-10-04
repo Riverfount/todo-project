@@ -5,9 +5,10 @@ from rich.console import Console
 from rich.table import Table
 from sqlmodel import Session, select
 
+from todo.auth import authenticate_user
 from todo.config import settings
 from todo.db import engine
-from todo.models import User, gen_user_name
+from todo.models import User, gen_user_name, get_user
 
 main = typer.Typer(name='Todo CLI', add_completion=False)
 
@@ -21,6 +22,8 @@ def shell():
         'select': select,
         'session': Session(engine),
         'gen_user_name': gen_user_name,
+        'get_user': get_user,
+        'authenticate_user': authenticate_user,
         'User': User
     }
     typer.echo(f'Auto imports: {list(_vars.keys())}')

@@ -12,8 +12,8 @@ from todo.config import settings
 from todo.models import User, get_user
 from todo.security import verify_password
 
-SECRET_KEY = settings.security.secret_key  # pyright: ignore
-ALGORITHM = settings.security.algorithm  # pyright: ignore
+SECRET_KEY = settings.security.secret_key
+ALGORITHM = settings.security.algorithm
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -55,8 +55,8 @@ def create_access_token(
     to_encode.update({"exp": expire, "scope": scope})
     encoded_jwt = jwt.encode(
         to_encode,
-        SECRET_KEY,  # pyright: ignore
-        algorithm=ALGORITHM,  # pyright: ignore
+        SECRET_KEY,
+        algorithm=ALGORITHM,
     )
     return encoded_jwt
 
@@ -78,7 +78,7 @@ def authenticate_user(
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
-    request: Request = None,  # pyright: ignore
+    request: Request = None,
     fresh=False
 ) -> User:
     """Get current user authenticated"""
@@ -98,10 +98,10 @@ def get_current_user(
     try:
         payload = jwt.decode(
             token,
-            SECRET_KEY,  # pyright: ignore
-            algorithms=[ALGORITHM]  # pyright: ignore
+            SECRET_KEY,
+            algorithms=[ALGORITHM]
         )
-        username: str = payload.get("sub")  # pyright: ignore
+        username: str = payload.get("sub")
 
         if username is None:
             raise credentials_exception
@@ -111,7 +111,7 @@ def get_current_user(
     user = get_user(user_name=token_data.username)
     if user is None:
         raise credentials_exception
-    if fresh and (not payload["fresh"] and not user.superuser):
+    if fresh and (not payload["fresh"]):
         raise credentials_exception
 
     return user
