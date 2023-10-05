@@ -47,11 +47,18 @@ testpaths = [
     "/tests",
 ]
 
+[tool.taskipy.variables]
+pyc = "./ -name '*.pyc' -delete"
+pycache = "./ -name '__pycache__' -delete"
+thumbs = "./ -name 'Thumbs.db' -delete"
+root = "./ -name '*~' -delete"
+
 [tool.taskipy.tasks]
 test = {cmd = "pytest -x", help = "Run test and abort if has one fail."}
 test-cov = {cmd = "pytest --cov=todo", help = "Run test and give us a coverage report."}
 lint = {cmd = "flake8 .", help = "Run lint to check PEP8."}
-clean = {cmd = "find ./ -name '*.pyc' -delete && find ./ -name '__pycache__' -delete && find ./ -name 'Thumbs.db' -delete && find ./ -name '*~' -delete && rm -rf .cache && rm -rf .pytest_cache && rm -rf dist && rm -rf *.egg-info && rm -rf htmlcov && rm -rf .tox/ && rm -rf site", help = "Clear the project off all files that are dispensables."}
+clean = {cmd = "find {pyc} && find {pycache} && find {thumbs} && find {root}", help = "Clear the project off all files that are dispensables.", use_vars = true}
+post_clean = {cmd = "rm -rf .cache && rm -rf .pytest_cache && rm -rf dist && rm -rf *.egg-info && rm -rf htmlcov && rm -rf .tox/ && rm -rf site", help = "Remove all files that are dispensables."}
 down = {cmd = "docker-compose down", help = "Down the services containers."}
 remove-img = {cmd = "docker image rm todo_project_api:latest todo_postgres-15-alpine-multi-user:latest", help = "Delete containers images to build again."}
 up = {cmd = "docker-compose up -d", help = "Up the services containers."}
