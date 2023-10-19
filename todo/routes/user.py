@@ -9,14 +9,14 @@ router = APIRouter()
 
 
 @router.get('/', response_model=list[UserResponse])
-async def list_users(*, session: Session = ActiveSession):
+async def list_users():
     """List all users."""
     users = get_user()
     return users
 
 
 @router.get('/{user_name}/', response_model=UserDetailResponse)
-async def get_usert_by_user_name(*, user_name: str, session: Session = ActiveSession):
+async def get_user_by_user_name(*, user_name: str):
     """Get user by user_name"""
     user = get_user(user_name=user_name)
     if not user:

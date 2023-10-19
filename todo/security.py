@@ -39,6 +39,6 @@ class HashedPassword(str):
         """Accepts a plain text password and returns a hashed password."""
         if not isinstance(v, str):
             raise TypeError('String required.')
-        
+
         hashed_password = get_password_hash(v)
         return cls(hashed_password)
