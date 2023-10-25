@@ -19,6 +19,7 @@ class User(SQLModel, table=True):
     user_name: str = Field(nullable=False, unique=True)
     active: Optional[bool] = Field(default=True)
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    super_user: Optional[bool] = Field(default=False)
     updated_at: datetime = Field(
         default_factory=datetime.utcnow,
         nullable=False,
@@ -40,6 +41,7 @@ class UserResponse(BaseModel):
 class UserDetailResponse(UserResponse):
     """Serializer for User Detail Response."""
     active: bool
+    super_user: bool
     created_at: datetime
     updated_at: datetime
 
@@ -49,6 +51,7 @@ class UserRequest(BaseModel):
     email: str
     password: str
     user_name: Optional[str] = None
+    super_user: Optional[bool] = False
 
     @root_validator(pre=True)
     def generate_user_name_if_not_set(cls, values):
