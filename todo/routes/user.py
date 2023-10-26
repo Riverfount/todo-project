@@ -1,10 +1,17 @@
 from fastapi import APIRouter, status
 from fastapi.exceptions import HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
-from todo.db import ActiveSession
-from todo.models import User, UserDetailResponse, UserRequest, UserResponse, get_user
 from todo.auth import AuthenticatedUser, SuperUser
+from todo.db import ActiveSession
+from todo.models import (
+    User,
+    UserDetailResponse,
+    UserRequest,
+    UserResponse,
+    get_user
+)
 
 router = APIRouter()
 
@@ -28,9 +35,11 @@ async def get_user_by_user_name(*, user_name: str):
 @router.post('/', response_model=UserResponse, status_code=status.HTTP_201_CREATED, dependencies=[SuperUser])
 async def create_user(*, user: UserRequest, session: Session = ActiveSession):
     """Creates new user"""
-    # TODO: Validar informações recebidas com as constraints do banco.
     db_user = User.from_orm(user)  # Transform UserRequest in User
     session.add(db_user)
-    session.commit()
+    try:
+        session.commit()
+    except IntegrityError:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='E-mail or user-name already exists.')
     session.refresh(db_user)
     return db_user
