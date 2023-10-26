@@ -126,7 +126,18 @@ async def get_current_active_user(
     return current_user
 
 
+async def get_current_super_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if not current_user.super_user:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail='Not a super user.'
+        )
+    return current_user
+
+
 AuthenticatedUser = Depends(get_current_active_user)
+SuperUser = Depends(get_current_super_user)
 
 
 async def validate_token(token: str = Depends(oauth2_scheme)) -> User:
