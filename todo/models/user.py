@@ -1,13 +1,12 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, root_validator
+from pydantic import BaseModel, EmailStr, root_validator
 from slugify import slugify
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Session, SQLModel, select
 
 from todo.db import engine
 from todo.security import HashedPassword
-from sqlmodel import Session, select
 
 
 class User(SQLModel, table=True):
@@ -48,7 +47,7 @@ class UserDetailResponse(UserResponse):
 
 class UserRequest(BaseModel):
     name: str
-    email: str
+    email: EmailStr
     password: str
     user_name: Optional[str] = None
     super_user: Optional[bool] = False
