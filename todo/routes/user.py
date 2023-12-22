@@ -10,6 +10,7 @@ from todo.models import (
     UserDetailResponse,
     UserRequest,
     UserResponse,
+    UserUpdate,
     get_user
 )
 
@@ -41,5 +42,33 @@ async def create_user(*, user: UserRequest, session: Session = ActiveSession):
         session.commit()
     except IntegrityError:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail='E-mail or user-name already exists.')
+    session.refresh(db_user)
+    return db_user
+
+
+@router.delete('/{user_name}/', status_code=status.HTTP_204_NO_CONTENT, dependencies=[SuperUser])
+async def delete_user_by_user_name(*, user_name: str, session: Session = ActiveSession):
+    """Get user by user_name."""
+    user = get_user(user_name=user_name)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail='User not found.'
+        )
+    session.delete(user)
+    session.commit()
+
+
+@router.patch('/{user_name}/', response_model=UserDetailResponse, dependencies=[AuthenticatedUser])
+async def update_user(*, user_name: str, session: Session = ActiveSession, user_update: UserUpdate):
+    db_user = get_user(user_name=user_name)
+
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+    user_data = user_update.dict(exclude_unset=True)
+    for key, value in user_data.items():
+        setattr(db_user, key, value)
+
+    session.add(db_user)
+    session.commit()
     session.refresh(db_user)
     return db_user

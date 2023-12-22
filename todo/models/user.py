@@ -60,6 +60,12 @@ class UserRequest(BaseModel):
         return values
 
 
+class UserUpdate(BaseModel):
+    name: Optional[str]
+    email: Optional[str]
+    super_user: Optional[bool] = False
+
+
 def get_user(user_name: str = None) -> User | list[User] | None:
     query = (
         select(User).where(User.user_name == user_name).where(User.active) if user_name
