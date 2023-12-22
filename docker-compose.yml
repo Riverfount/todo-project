@@ -18,7 +18,7 @@ services:
     tty: true
   db:
     build: postgres
-    image: todo_postgres-15-alpine-multi-user
+    image: postgres:16.1-alpine3.19
     volumes:
       - ~/.postgres/todo_db/data/postgresql:/var/lib/postgresql/data
     ports:
