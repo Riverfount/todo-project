@@ -7,7 +7,7 @@ from sqlmodel import Session, select
 
 from todo.auth import authenticate_user
 from todo.config import settings
-from todo.db import engine
+from todo.db import engine, SQLModel
 from todo.models import User, gen_user_name, get_user
 
 main = typer.Typer(name='Todo CLI', add_completion=False)
@@ -75,3 +75,13 @@ def create_user(
         session.refresh(user)
         typer.echo(f'Created {user.user_name} user.')
         return user
+
+
+@main.command()
+def reset_db(
+    force: bool = typer.Option(False, '--force', '-f', help='Run with no confirmation')
+):
+    """Resets the database tables."""
+    force = force or typer.confirm('Are you sure.')
+    if force:
+        SQLModel.metadata.drop_all(engine)
