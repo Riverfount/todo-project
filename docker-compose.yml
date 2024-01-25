@@ -17,8 +17,8 @@ services:
     stdin_open: true
     tty: true
   db:
-    build: postgres
-    image: postgres:16.1-alpine3.19
+    build:
+      context: ./postgres
     volumes:
       - ~/.postgres/todo_db/data/postgresql:/var/lib/postgresql/data
     ports:
